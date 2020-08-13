@@ -1,0 +1,16 @@
+{
+  "name": "game",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://gitlab.com/Zenderg/game.git",
+  "author": "Zenderg <danil54658798@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel index.html --open"
+  },
+  "dependencies": {
+    "parcel-bundler": "^1.12.4",
+    "phaser": "^3.24.1",
+    "typescript": "^3.9.7"
+  }
+}

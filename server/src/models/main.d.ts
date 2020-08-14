@@ -1,3 +1,5 @@
+import {Observable} from "rxjs";
+
 interface Coords {
     x: number
     y: number
@@ -57,4 +59,22 @@ interface Chunk {
 interface IMap {
     getState(): GameState
     getChunk(coords: Coords): Chunk
+}
+
+
+interface Action {
+
+}
+
+interface IServer {
+    state: Observable<GameState>
+
+    emit(action: Action)
+}
+
+enum Actions {
+    INIT,
+    SPAWN,
+    JUMP,
+    MOVE,
 }

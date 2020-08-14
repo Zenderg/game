@@ -6,13 +6,19 @@
   "author": "Zenderg <danil54658798@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "parcel index.html --open"
+    "client": "parcel src/client/index.html --open",
+    "server": "ts-node-dev --respawn src/server/main"
   },
   "dependencies": {
     "parcel-bundler": "^1.12.4",
     "phaser": "^3.24.1",
     "rxjs": "^6.6.2",
-    "typescript": "^3.9.7",
-    "ws": "^7.3.1"
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
+    "typescript": "^3.9.7"
+  },
+  "devDependencies": {
+    "@types/socket.io-client": "^1.4.33",
+    "ts-node-dev": "^1.0.0-pre.57"
   }
 }

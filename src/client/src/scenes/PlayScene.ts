@@ -1,14 +1,22 @@
 import * as Phaser from "phaser"
 import {SCENES} from '../constants/scenes';
 import Anna from '../classes/Anna';
+import {Engine} from "../engine/main";
+import {Direction} from "../../../shared/models/main";
+import Creature from "../classes/Creature";
 
 export class PlayScene extends Phaser.Scene{
     anna!: Phaser.Physics.Arcade.Sprite;
+    vanya: Phaser.Physics.Arcade.Sprite;
+
     keyboard!: {[index: string]: Phaser.Input.Keyboard.Key};
+    private engine: Engine;
+
     constructor(){
         super({
             key: SCENES.PLAY
         })
+        this.engine = new Engine();
     }
     init(){}
     preload(){
@@ -22,6 +30,7 @@ export class PlayScene extends Phaser.Scene{
         pimple.play('dazzle');
 
         this.anna = new Anna(this, 400, 400, 'anna', 26);
+        this.vanya = new Creature(this, 400, 400, 'cat', 26);
 
         // create map
         const map = this.make.tilemap({ key: 'map' });
@@ -48,28 +57,43 @@ export class PlayScene extends Phaser.Scene{
 
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D");
     }
+
+    move(personName, person){
+        const {position: {x,y}} = person;
+        this[personName].setX(x);
+        this[personName].setY(y);
+    }
+
     update(time: number, delta: number){
         if(this.anna.active){
+            const {me} = this.engine.state;
+            const cat = this.engine.state.players[0];
+
+            this.move('anna', me);
+            this.move('vanya', cat);
+
+            let vecX: Direction = 0;
+            let vecY: Direction = 0;
             if(this.keyboard.D.isDown){
-                this.anna.setVelocityX(256);
+                // this.anna.setVelocityX(256);
+                vecX = 1;
             }
 
             if(this.keyboard.A.isDown){
-                this.anna.setVelocityX(-256);
+                // this.anna.setVelocityX(-256);
+                vecX = -1;
             }
             if(this.keyboard.W.isDown){
-                this.anna.setVelocityY(-256);
+                // this.anna.setVelocityY(-256);
+                vecY = -1;
             }
 
             if(this.keyboard.S.isDown){
-                this.anna.setVelocityY(256);
+                // this.anna.setVelocityY(256);
+                vecY = 1;
             }
-            if(this.keyboard.A.isUp && this.keyboard.D.isUp){
-                this.anna.setVelocityX(0);
-            }
-            if(this.keyboard.W.isUp && this.keyboard.S.isUp){
-                this.anna.setVelocityY(0);
-            }
+
+            this.engine.move([vecX, vecY]);
 
             if(this.anna.body.velocity.x > 0){
                 this.anna.play("right", true);

@@ -1,25 +1,25 @@
 import {Observable} from "rxjs";
 
-interface Coords {
+export interface Coords {
     x: number
     y: number
 }
 
-type Direction = -1 | 0 | 1;
-type Vector = [Direction, Direction];
+export type Direction = -1 | 0 | 1;
+export type Vector = [Direction, Direction];
 
-enum WeaponEnum {
+export enum WeaponEnum {
     knife,
     bow,
 }
 
-enum CharacterEnum {
+export enum CharacterEnum {
     archer
 }
 
-type Degree = number // 0-360
+export type Degree = number // 0-360
 
-interface Player {
+export interface Player {
     id: number
     name: string
     position: Coords
@@ -28,53 +28,54 @@ interface Player {
     character: CharacterEnum
 }
 
-interface IPlayer extends Player {
+export interface IPlayer extends Player {
     move(token: string, dir: Vector): void
     attack(token: string, weapon: WeaponEnum, deg: Degree): void
     jump(token: string, deg: Degree): void
 }
 
-interface GameState {
+export interface GameState {
     me: Player
-    players: [Player]
+    players: Player[]
 }
 
-enum BlockEnum {
+export enum BlockEnum {
     grass,
     dirt,
     stone,
 }
 
-interface Block {
+export interface Block {
     coords: Coords
     type: BlockEnum
     hasCollision: boolean
 }
 
-interface Chunk {
+export interface Chunk {
     coords: Coords
     blocks: [Block]
 }
 
-interface IMap {
+export interface IMap {
     getState(): GameState
     getChunk(coords: Coords): Chunk
 }
 
 
-interface Action {
+export interface Action {
 
 }
 
-interface IServer {
+export interface IServer {
     state: Observable<GameState>
 
-    emit(action: Action)
+    emit(action: Action): void
 }
 
-enum Actions {
-    INIT,
+export enum Actions {
+    LOGIN,
     SPAWN,
     JUMP,
     MOVE,
+    UPDATE,
 }

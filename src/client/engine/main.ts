@@ -6,8 +6,8 @@ export class Engine {
     private ws: any;
 
     token: string;
-    // state$: BehaviorSubject<GameState>;
-    state: GameState;
+    state$: BehaviorSubject<GameState>;
+    // state: GameState;
 
     constructor() {
         this.ws = io('ws://localhost:4000');
@@ -16,12 +16,12 @@ export class Engine {
 
     init() {
         this.ws.on(Actions.UPDATE, (gameState: GameState) => {
-            this.state = gameState;
-            // if(this.state$) {
-            //     this.state$.next(gameState);
-            // } else {
-            //     this.state$ = new BehaviorSubject<GameState>(gameState);
-            // }
+            // this.state$.next() = gameState;
+            if(this.state$) {
+                this.state$.next(gameState);
+            } else {
+                this.state$ = new BehaviorSubject<GameState>(gameState);
+            }
         })
     }
 

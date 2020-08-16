@@ -51,23 +51,35 @@ export class PlayScene extends Phaser.Scene{
         this.anna.setCollideWorldBounds(true);
 
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D");
+
+        this.engine.state$.subscribe(state => {
+            const {me} = state;
+            this.move('anna', me);
+        })
     }
 
     move(personName, person){
         const {position: {x,y}} = person;
         if (person.name === 'Anna') {
-            console.log(this[personName].x);
-            this.physics.moveTo(this[personName], x, y, 0, 33)
+            this.physics.moveTo(this[personName], x, y, 0, 200)
         }
     }
 
     update(time: number, delta: number){
         if(this.anna.active){
-            const {me} = this.engine.state;
-            const cat = this.engine.state.players[0];
+            // const {me} = this.engine.state;
+            // const cat = this.engine.state.players[0];
+            //
+            // const {position: {x,y}} = me;
+            // const xy = `${x}${y}`;
+            //
+            // if(this.prevCoords !== xy){
+            //     this.move('anna', me);
+            //     this.prevCoords = xy;
+            //     console.log(xy);
+            // }
 
-            this.move('anna', me);
-            this.move('vanya', cat);
+            // this.move('vanya', cat);
 
             let vecX: Direction = 0;
             let vecY: Direction = 0;
@@ -92,15 +104,15 @@ export class PlayScene extends Phaser.Scene{
 
             this.engine.move([vecX, vecY]);
 
-            if(this.anna.body.velocity.x > 0){
-                this.anna.play("right", true);
-            } else if(this.anna.body.velocity.x < 0){
-                this.anna.anims.playReverse("left", true);
-            } else if(this.anna.body.velocity.y < 0){
-                this.anna.play("up", true);
-            } else if(this.anna.body.velocity.y > 0){
-                this.anna.play("down", true);
-            }
+            // if(this.anna.body.velocity.x > 0){
+            //     this.anna.play("right", true);
+            // } else if(this.anna.body.velocity.x < 0){
+            //     this.anna.anims.playReverse("left", true);
+            // } else if(this.anna.body.velocity.y < 0){
+            //     this.anna.play("up", true);
+            // } else if(this.anna.body.velocity.y > 0){
+            //     this.anna.play("down", true);
+            // }
         }
     }
 }

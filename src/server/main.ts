@@ -37,7 +37,7 @@ io.on('connection', (client: any) => {
         user.position.y += y*speed;
     });
 
-    interval(10).subscribe(r => {
+    interval(200).subscribe(r => {
         if(cat.position.x > user.position.x) {
             cat.position.x--;
         } else if(cat.position.x < user.position.x) {

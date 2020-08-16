@@ -2,7 +2,7 @@ import * as Phaser from "phaser"
 import {SCENES} from '../constants/scenes';
 import Anna from '../classes/Anna';
 import {Engine} from "../engine/main";
-import {Direction} from "../../../shared/models/main";
+import {Direction} from "../../shared/models/main";
 import Creature from "../classes/Creature";
 
 export class PlayScene extends Phaser.Scene{
@@ -20,15 +20,10 @@ export class PlayScene extends Phaser.Scene{
     }
     init(){}
     preload(){
-        this.textures.addSpriteSheetFromAtlas("mandy", {frameHeight: 64, frameWidth: 64, atlas:"characters", frame: "mandy"});
-
         this.load.tilemapTiledJSON("map", './assets/map2.json');
         this.load.image("tiles", './assets/tiles2.jpg');
     }
     create(){
-        let pimple: Phaser.GameObjects.Sprite = this.add.sprite(100, 100,'daze');
-        pimple.play('dazzle');
-
         this.anna = new Anna(this, 400, 400, 'anna', 26);
         this.vanya = new Creature(this, 400, 400, 'cat', 26);
 
@@ -60,8 +55,10 @@ export class PlayScene extends Phaser.Scene{
 
     move(personName, person){
         const {position: {x,y}} = person;
-        this[personName].setX(x);
-        this[personName].setY(y);
+        if (person.name === 'Anna') {
+            console.log(this[personName].x);
+            this.physics.moveTo(this[personName], x, y, 0, 33)
+        }
     }
 
     update(time: number, delta: number){

@@ -8,6 +8,7 @@ export class Engine {
     token: string;
     state$: BehaviorSubject<GameState>;
     // state: GameState;
+    queue = [];
 
     constructor() {
         this.ws = io('ws://localhost:4000');
@@ -23,9 +24,18 @@ export class Engine {
                 this.state$ = new BehaviorSubject<GameState>(gameState);
             }
         })
+
+        // setInterval(() => {
+        //     const vector = this.queue[0];
+        //     if(vector) {
+        //     }
+        //     this.queue = [];
+        // }, 100);
     }
 
     move(vector: Vector) {
-        this.ws.emit(Actions.MOVE, {data: {vector}, token: this.token})
+        this.ws.emit(Actions.MOVE, {data: {vector}, token: this.token});
+
+        // this.queue.push(vector);
     }
 }

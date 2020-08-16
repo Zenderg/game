@@ -4,6 +4,7 @@ import Anna from '../classes/Anna';
 import {Engine} from "../engine/main";
 import {Direction} from "../../shared/models/main";
 import Creature from "../classes/Creature";
+import Tween = Phaser.Tweens.Tween;
 
 export class PlayScene extends Phaser.Scene{
     anna!: Phaser.Physics.Arcade.Sprite;
@@ -61,7 +62,10 @@ export class PlayScene extends Phaser.Scene{
     move(personName, person){
         const {position: {x,y}} = person;
         if (person.name === 'Anna') {
-            this.physics.moveTo(this[personName], x, y, 0, 200)
+            // this.anna.
+            const a = new Tween(this.anna, this.g)
+            // this.anna.setPosition(x, y);
+            // this.physics.moveTo(this[personName], x, y, 100, 100)
         }
     }
 
@@ -83,6 +87,7 @@ export class PlayScene extends Phaser.Scene{
 
             let vecX: Direction = 0;
             let vecY: Direction = 0;
+
             if(this.keyboard.D.isDown){
                 // this.anna.setVelocityX(256);
                 vecX = 1;
@@ -102,7 +107,9 @@ export class PlayScene extends Phaser.Scene{
                 vecY = 1;
             }
 
-            this.engine.move([vecX, vecY]);
+            if(vecX !== 0 || vecY !== 0) {
+                this.engine.move([vecX, vecY]);
+            }
 
             // if(this.anna.body.velocity.x > 0){
             //     this.anna.play("right", true);

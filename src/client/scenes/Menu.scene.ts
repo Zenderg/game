@@ -10,10 +10,8 @@ export class MenuScene extends Phaser.Scene{
         });
     }
     init(){}
-    preload(){
-        console.log("MENU preload")
-        this.load.image(IMAGES.TITLE, `dist/assets/image/${IMAGES.TITLE}`);
-    }
+    preload(){}
+
     create(){
         console.log("MENU create");
         this.add.image(0,0, IMAGES.TITLE).setOrigin(0).setDepth(0);

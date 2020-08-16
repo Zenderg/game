@@ -2,7 +2,7 @@ import * as Phaser from "phaser"
 import {SCENES} from '../constants/scenes';
 import Anna from '../classes/Anna';
 import {Engine} from "../engine/main";
-import {Direction} from "../../../shared/models/main";
+import {Direction} from "../../shared/models/main";
 import Creature from "../classes/Creature";
 
 export class PlayScene extends Phaser.Scene{

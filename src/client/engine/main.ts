@@ -1,5 +1,5 @@
 import {BehaviorSubject} from "rxjs";
-import {Actions, GameState, Vector} from "../../../shared/models/main";
+import {Actions, GameState, Vector} from "../../shared/models/main";
 import io from 'socket.io-client';
 
 export class Engine {

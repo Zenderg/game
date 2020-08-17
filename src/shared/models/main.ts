@@ -20,7 +20,7 @@ export enum CharacterEnum {
 export type Degree = number // 0-360
 
 export interface Player {
-    id: number
+    id: string
     name: string
     position: Coords
     health: number
@@ -73,9 +73,10 @@ export interface IServer {
 }
 
 export enum Actions {
-    LOGIN,
-    SPAWN,
-    JUMP,
-    MOVE,
-    UPDATE,
+    LOGIN="LOGIN",
+    SPAWN="SPAWN",
+    JUMP="JUMP",
+    MOVE="MOVE",
+    UPDATE="UPDATE",
+    NEW_PLAYER="NEW_PLAYER",
 }

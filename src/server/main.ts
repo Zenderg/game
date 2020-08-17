@@ -1,79 +1,95 @@
-// import WebSocket from "ws";
-// import {Vector} from "./models/main";
-
-
 import {Actions, CharacterEnum, GameState, Player} from "../shared/models/main";
 import {interval} from "rxjs";
+import Socket = SocketIOClient.Socket;
 
-const server = require('http').createServer();
+const express = require('express');
+const app = express()
+const path = require('path');
+const port = 8000;
+
+const server = app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+})
+
+app.use('/', express.static(path.resolve(__dirname + '/../../dist')));
+
+
 const io = require('socket.io')(server);
 
-const user: Player = {
-    character: CharacterEnum.archer,
-    health: 100,
-    id: 667,
-    name: 'Anna',
-    position: {x: 300, y: 300},
-    speed: 8,
-}
-const cat: Player = {
-    character: CharacterEnum.archer,
-    health: 100,
-    id: 123,
-    name: 'Cat',
-    position: {x: 400, y: 400},
-    speed: 1,
-}
+
+class Game {
+    players: {
+        [key:string] : Player
+    } = {};
+
+    sockets: {
+        [key:string]: Socket
+    } = {}
+
+    constructor() {
+        io.on('connection', (socket: Socket) => {
+            this.addPlayer(socket);
+
+            interval(30).subscribe((r: any) => {
+              this.update()
+            })
+        });
 
 
-io.on('connection', (client: any) => {
-    client.on(Actions.MOVE, (message: any) => {
-        const {data, token} = message;
-        const {vector} = data;
-        const [x,y]: [number, number] = vector;
-        const {speed} = user;
+    }
 
-        user.position.x += x*speed;
-        user.position.y += y*speed;
-    });
+    update() {
+        const playersArray = Object.values(this.players);
+        Object.values(this.sockets).forEach((socket: Socket) => {
+            const newGameState: GameState = {
+                me: this.players[socket.id],
+                players: playersArray.filter(it => it.id !== socket.id).map(it => ({...it, name: 'Cat'})).slice(0, 2)
+            };
 
-    interval(200).subscribe(r => {
-        if(cat.position.x > user.position.x) {
-            cat.position.x--;
-        } else if(cat.position.x < user.position.x) {
-            cat.position.x++;
-        }
+            socket.emit(Actions.UPDATE, newGameState)
+        })
+    }
 
-        if(cat.position.y > user.position.y) {
-            cat.position.y--;
-        } else if(cat.position.y < user.position.y) {
-            cat.position.y++;
-        }
+    handleAction() {
 
-        const newGameState: GameState = {
-            me: user,
-            players: [cat]
+    }
+
+
+    addPlayer(socket: Socket) {
+        const id = socket.id;
+        this.sockets[id] = socket;
+
+        this.players[id] = {
+            character: CharacterEnum.archer,
+            health: 100,
+            id: id,
+            name: 'Anna',
+            position: {x: 300, y: 300},
+            speed: 4,
         };
+        console.log(id);
 
-        client.emit(Actions.UPDATE, newGameState)
-    })
+        socket.on(Actions.MOVE, (message: any) => {
+            const player = this.players[socket.id];
 
-});
-server.listen(4000);
+            const {data} = message;
+            const {vector} = data;
+            const [x,y]: [number, number] = vector;
+            const {speed} = player;
 
-// const wss = new WebSocket.Server({ port: 4000 });
-// console.log('Server started on port 4000')
-// wss.on('connection', function connection(ws: any) {
-//     ws.on('message', (message: any) => {
-//         const {data, action} = JSON.parse(message);
-//
-//         console.log(data, action);
-//         switch (action) {
-//             case 'MOVE':
-//                 console.log(data.vector)
-//                 break;
-//         }
-//     });
-//
-//     ws.send('something');
-// });
+            player.position.x += x*speed;
+            player.position.y += y*speed;
+        });
+
+        socket.on('disconnect', () => this.removePlayer(socket));
+
+    }
+
+    removePlayer(socket: Socket) {
+        console.log('remove', socket.id)
+        delete this.players[socket.id];
+        delete this.sockets[socket.id];
+    }
+}
+
+new Game();

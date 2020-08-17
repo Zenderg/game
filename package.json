@@ -11,6 +11,7 @@
     "alt-client": "parcel src/alt-client/index.html --open --no-cache"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "parcel-bundler": "^1.12.4",
     "phaser": "^3.24.1",
     "phaser3-rex-plugins": "^1.1.23",

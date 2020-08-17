@@ -1,5 +1,5 @@
-import {BehaviorSubject} from "rxjs";
-import {Actions, GameState, Vector} from "../../shared/models/main";
+import {BehaviorSubject, Subject} from "rxjs";
+import {Actions, GameState, Player, Vector} from "../../shared/models/main";
 import io from 'socket.io-client';
 
 export class Engine {
@@ -7,11 +7,13 @@ export class Engine {
 
     token: string;
     state$: BehaviorSubject<GameState>;
+    newPlayer$ = new Subject<Player>();
+
     // state: GameState;
     queue = [];
 
     constructor() {
-        this.ws = io('ws://localhost:4000');
+        this.ws = io(`ws://217.25.228.15:8000/`);
         this.init();
     }
 
@@ -24,18 +26,9 @@ export class Engine {
                 this.state$ = new BehaviorSubject<GameState>(gameState);
             }
         })
-
-        // setInterval(() => {
-        //     const vector = this.queue[0];
-        //     if(vector) {
-        //     }
-        //     this.queue = [];
-        // }, 100);
     }
 
     move(vector: Vector) {
         this.ws.emit(Actions.MOVE, {data: {vector}, token: this.token});
-
-        // this.queue.push(vector);
     }
 }

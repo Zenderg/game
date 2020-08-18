@@ -75,9 +75,7 @@ export class PlayScene extends Phaser.Scene{
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D");
 
         setTimeout(() => {
-            console.log(2);
             this.init();
-
         }, 500);
 
     }
@@ -85,12 +83,7 @@ export class PlayScene extends Phaser.Scene{
     move(player: Phaser.Physics.Arcade.Sprite, person: Player){
         const {position: {x,y}} = person;
 
-        const distance = Phaser.Math.Distance.Between(x, y, this.me.x, this.me.y)
-        if (player &&
-            (this.me.body.velocity.x === 0 || this.me.body.velocity.x > 1 || this.me.body.velocity.x < -1 ||
-            this.me.body.velocity.y === 0 || this.me.body.velocity.y > 1 || this.me.body.velocity.y < -1)
-        ) {
-
+        if (player) {
             this.physics.moveTo(player, x, y, 100, 200)
         }
     }
@@ -118,8 +111,6 @@ export class PlayScene extends Phaser.Scene{
             if(vecX !== 0 || vecY !== 0) {
                 this.engine.move([vecX, vecY]);
             }
-
-            console.log(this.me.body.velocity.x, this.me.body.velocity.x < 1);
 
             if(this.me.body.velocity.x > 0){
                 this.me.play(ANIMATIONS.ANNA.RIGHT.animationKey, true);

@@ -13,7 +13,7 @@ export class Engine {
     queue = [];
 
     constructor() {
-        this.ws = io(`ws://217.25.228.15:8000/`);
+        this.ws = io(`ws://localhost:8000/`);
         this.init();
     }
 

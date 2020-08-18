@@ -3,6 +3,7 @@ import {SCENES} from "../constants/scenes";
 import {IMAGES} from "../constants/images";
 import {SPRITES} from "../constants/sprites";
 import {AUDIOS} from "../constants/audios";
+import {ANIMATIONS} from "../constants/animations";
 
 export class LoadScene extends Phaser.Scene{
     constructor(){
@@ -17,11 +18,11 @@ export class LoadScene extends Phaser.Scene{
             this.load.image(IMAGES[prop], IMAGES[prop]);
         }
     }
-    loadSprites(frameConfig){
+    loadSprites(){
         this.load.setPath("./assets/sprite");
 
         for(let prop in SPRITES){
-            this.load.spritesheet(SPRITES[prop], SPRITES[prop], frameConfig);
+            this.load.spritesheet(SPRITES[prop].key, SPRITES[prop].path, SPRITES[prop].frameConfig);
         }
     }
     loadAudios(){
@@ -33,13 +34,11 @@ export class LoadScene extends Phaser.Scene{
     }
     init(){}
     preload(){
-        this.load.spritesheet('anna', './assets/sprite/anna.png', {frameHeight: 64, frameWidth: 64});
-        this.load.spritesheet('cat', './assets/sprite/cat.png', {frameHeight: 32, frameWidth: 32});
         // this.load.atlas('characters', './assets/atlas/characters.png', './assets/atlas/characters.json');
         // this.load.atlas('daze', './assets/atlas/daze.png', './assets/atlas/daze.json');
 
         this.loadImages();
-        this.loadSprites({frameWidth: 32, frameHeight: 32});
+        this.loadSprites();
         // this.loadAudios();
 
         let progressBar = this.add.graphics({

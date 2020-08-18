@@ -4,6 +4,9 @@ import Anna from '../classes/Anna';
 import {Engine} from "../engine/main";
 import {Direction, Player} from "../../shared/models/main";
 import Creature from "../classes/Creature";
+import {SPRITES} from "../constants/sprites";
+import {createAnimations} from "../tools/createAnimations";
+import {ANIMATIONS} from "../constants/animations";
 
 export class PlayScene extends Phaser.Scene{
     me!: Phaser.Physics.Arcade.Sprite;
@@ -17,20 +20,20 @@ export class PlayScene extends Phaser.Scene{
             key: SCENES.PLAY
         })
         this.engine = new Engine();
-        console.log(1);
     }
     init(){
         this.engine.state$.subscribe(state => {
             const {me, players} = state;
             if(!this.me){
-                this.me = new Anna(this, me.position.x, me.position.y, 'anna', 24);
+                this.me = new Anna(this, me.position.x, me.position.y, SPRITES.ANNA.key, 24);
+                createAnimations(SPRITES.ANNA.key, this.me);
             }
 
             players.forEach((it: Player) => {
                 if(this.players[it.id]) {
 
                 } else {
-                    this.players[it.id] = new Creature(this, me.position.x, me.position.y, 'cat', 24);
+                    this.players[it.id] = new Creature(this, me.position.x, me.position.y, SPRITES.CAT.key, 24);
                 }
 
             })
@@ -81,7 +84,13 @@ export class PlayScene extends Phaser.Scene{
 
     move(player: Phaser.Physics.Arcade.Sprite, person: Player){
         const {position: {x,y}} = person;
-        if (player) {
+
+        const distance = Phaser.Math.Distance.Between(x, y, this.me.x, this.me.y)
+        if (player &&
+            (this.me.body.velocity.x === 0 || this.me.body.velocity.x > 1 || this.me.body.velocity.x < -1 ||
+            this.me.body.velocity.y === 0 || this.me.body.velocity.y > 1 || this.me.body.velocity.y < -1)
+        ) {
+
             this.physics.moveTo(player, x, y, 100, 200)
         }
     }
@@ -110,15 +119,17 @@ export class PlayScene extends Phaser.Scene{
                 this.engine.move([vecX, vecY]);
             }
 
+            console.log(this.me.body.velocity.x, this.me.body.velocity.x < 1);
+
             if(this.me.body.velocity.x > 0){
-                this.me.play("right", true);
+                this.me.play(ANIMATIONS.ANNA.RIGHT.animationKey, true);
             } else if(this.me.body.velocity.x < 0){
-                this.me.anims.playReverse("left", true);
+                this.me.anims.play(ANIMATIONS.ANNA.LEFT.animationKey, true);
             } else if(this.me.body.velocity.y < 0){
-                this.me.play("up", true);
+                this.me.play(ANIMATIONS.ANNA.UP.animationKey, true);
             } else if(this.me.body.velocity.y > 0){
-                this.me.play("down", true);
-            } else if(this.me.body.velocity.x === 0 || this.me.body.velocity.y === 0){
+                this.me.play(ANIMATIONS.ANNA.DOWN.animationKey, true);
+            } else {
                 this.me.anims.stop();
             }
         }

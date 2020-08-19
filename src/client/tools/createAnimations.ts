@@ -7,7 +7,6 @@ export const createAnimations = (spriteName: string, self: Phaser.Physics.Arcade
 
     for(let prop in animationObject){
         const anim = animationObject[prop]
-        console.log(anim);
         self.anims.animationManager.create({
             key: anim.animationKey,
             frameRate: anim.frameRate,

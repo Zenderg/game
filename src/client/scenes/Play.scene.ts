@@ -10,6 +10,7 @@ import {ANIMATIONS} from "../constants/animations";
 
 export class PlayScene extends Phaser.Scene{
     me!: Phaser.Physics.Arcade.Sprite;
+    meGroup: Phaser.GameObjects.Group;
     players: {[key: string]: Phaser.Physics.Arcade.Sprite} = {};
 
     keyboard!: {[index: string]: Phaser.Input.Keyboard.Key};
@@ -25,7 +26,14 @@ export class PlayScene extends Phaser.Scene{
         this.engine.state$.subscribe(state => {
             const {me, players} = state;
             if(!this.me){
-                this.me = new Anna(this, me.position.x, me.position.y, SPRITES.ANNA.key, 24);
+                this.me = new Anna(this, me.position.x, me.position.y, SPRITES.ANNA.key, {
+                    hp: 10,
+                    maxHp: 20,
+                    name: "asdas"
+                } ,24);
+                const group = this.add.group()
+                const text = this.add.text(me.position.x, me.position.y, "nickname")
+                this.meGroup = group.addMultiple([this.me, text],true);
                 createAnimations(SPRITES.ANNA.key, this.me);
             }
 

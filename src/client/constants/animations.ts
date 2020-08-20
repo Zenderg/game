@@ -48,7 +48,7 @@ export const ANIMATIONS = {
         UP: {
             spriteKey: "ANNA",
             animationKey: basic.UP,
-            frameRate: 10,
+            frameRate: 30,
             framesConfig: {
                 start: 0,
                 end: 8,
@@ -57,7 +57,7 @@ export const ANIMATIONS = {
         RIGHT: {
             spriteKey: "ANNA",
             animationKey: basic.RIGHT,
-            frameRate: 10,
+            frameRate: 30,
             framesConfig: {
                 start: 27,
                 end: 35,
@@ -66,7 +66,7 @@ export const ANIMATIONS = {
         DOWN: {
             spriteKey: "ANNA",
             animationKey: basic.DOWN,
-            frameRate: 10,
+            frameRate: 30,
             framesConfig: {
                 start: 18,
                 end: 26,
@@ -75,7 +75,7 @@ export const ANIMATIONS = {
         LEFT: {
             spriteKey: "ANNA",
             animationKey: basic.LEFT,
-            frameRate: 10,
+            frameRate: 30,
             framesConfig: {
                 start: 9,
                 end: 17,

@@ -1,44 +1,39 @@
 import * as Phaser from "phaser"
 import {SCENES} from '../constants/scenes';
-import Anna from '../classes/Anna';
+import Player from '../classes/Player';
 import {Engine} from "../engine/main";
 import {Direction, Player} from "../../shared/models/main";
 import Creature from "../classes/Creature";
 import {SPRITES} from "../constants/sprites";
-import {createAnimations} from "../tools/createAnimations";
-import {ANIMATIONS} from "../constants/animations";
+import PlayerContainer from "../classes/PlayerContainer";
 
-export class PlayScene extends Phaser.Scene{
-    me!: Phaser.Physics.Arcade.Sprite;
-    meGroup: Phaser.GameObjects.Group;
-    players: {[key: string]: Phaser.Physics.Arcade.Sprite} = {};
+export class PlayScene extends Phaser.Scene {
+    me!: Phaser.GameObjects.Container;
+    players: { [key: string]: Phaser.Physics.Arcade.Sprite } = {};
 
-    keyboard!: {[index: string]: Phaser.Input.Keyboard.Key};
+    keyboard!: { [index: string]: Phaser.Input.Keyboard.Key };
     private engine: Engine;
 
-    constructor(){
+    constructor() {
         super({
             key: SCENES.PLAY
         })
         this.engine = new Engine();
     }
-    init(){
+
+    init() {
         this.engine.state$.subscribe(state => {
             const {me, players} = state;
-            if(!this.me){
-                this.me = new Anna(this, me.position.x, me.position.y, SPRITES.ANNA.key, {
+            if (!this.me) {
+                this.me = new PlayerContainer(this, me.position.x, me.position.y, SPRITES.ANNA.key, {
                     hp: 10,
                     maxHp: 20,
                     name: "asdas"
-                } ,24);
-                const group = this.add.group()
-                const text = this.add.text(me.position.x, me.position.y, "nickname")
-                this.meGroup = group.addMultiple([this.me, text],true);
-                createAnimations(SPRITES.ANNA.key, this.me);
+                }, 24);
             }
 
             players.forEach((it: Player) => {
-                if(this.players[it.id]) {
+                if (this.players[it.id]) {
 
                 } else {
                     this.players[it.id] = new Creature(this, me.position.x, me.position.y, SPRITES.CAT.key, 24);
@@ -49,23 +44,25 @@ export class PlayScene extends Phaser.Scene{
             this.move(this.me, me);
 
             players.forEach((it) => {
-                this.move(this.players[it.id], it);
+                // this.move(this.players[it.id], it);
             })
         });
     }
-    preload(){
+
+    preload() {
         this.load.tilemapTiledJSON("map", './assets/map2.json');
         this.load.image("tiles", './assets/tiles2.jpg');
     }
-    create(){
+
+    create() {
         // create map
-        const map = this.make.tilemap({ key: 'map' });
+        const map = this.make.tilemap({key: 'map'});
         const tileset = map.addTilesetImage('my-tiles', 'tiles');
         map.createStaticLayer('bg', tileset, 0, 0).setDepth(0);
         const buildings = map.createStaticLayer('buildings', tileset, 0, 0).setDepth(0);
         buildings.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.me, buildings);
-        this.physics.world.setBounds(0,0, map.widthInPixels, map.heightInPixels);
+        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         //debug layers
         buildings.renderDebug(this.add.graphics(), {
             tileColor: 0,
@@ -75,10 +72,10 @@ export class PlayScene extends Phaser.Scene{
 
         // init following camera
         this.cameras.main.startFollow(this.me);
-        this.cameras.main.setBounds(0,0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-        this.me.setSize(40,50).setOffset(10, 10);
-        this.me.setCollideWorldBounds(true);
+        // this.me.setSize(40, 50).setOffset(10, 10);
+        // this.me.setCollideWorldBounds(true);
 
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D");
 
@@ -88,48 +85,39 @@ export class PlayScene extends Phaser.Scene{
 
     }
 
-    move(player: Phaser.Physics.Arcade.Sprite, person: Player){
-        const {position: {x,y}} = person;
+    move(player: Phaser.GameObjects.Container, person: Player) {
+        const {position: {x, y}} = person;
 
-        if (player) {
-            this.physics.moveTo(player, x, y, 100, 200)
+        const distance = Phaser.Math.Distance.Between(x,y, this.me.x, this.me.y);
+        if (player && distance >= 4) {
+            this.physics.moveTo(this.me, x, y, 100, 60)
+        } else if (distance < 4) {
+            this.me.body.reset(x, y);
         }
     }
 
-    update(time: number, delta: number){
-        if(this.me.active){
+    update(time: number, delta: number) {
+        if (this.me.active) {
             let vecX: Direction = 0;
             let vecY: Direction = 0;
 
-            if(this.keyboard.D.isDown){
+            if (this.keyboard.D.isDown) {
                 vecX = 1;
             }
 
-            if(this.keyboard.A.isDown){
+            if (this.keyboard.A.isDown) {
                 vecX = -1;
             }
-            if(this.keyboard.W.isDown){
+            if (this.keyboard.W.isDown) {
                 vecY = -1;
             }
 
-            if(this.keyboard.S.isDown){
+            if (this.keyboard.S.isDown) {
                 vecY = 1;
             }
 
-            if(vecX !== 0 || vecY !== 0) {
+            if (vecX !== 0 || vecY !== 0) {
                 this.engine.move([vecX, vecY]);
-            }
-
-            if(this.me.body.velocity.x > 0){
-                this.me.play(ANIMATIONS.ANNA.RIGHT.animationKey, true);
-            } else if(this.me.body.velocity.x < 0){
-                this.me.anims.play(ANIMATIONS.ANNA.LEFT.animationKey, true);
-            } else if(this.me.body.velocity.y < 0){
-                this.me.play(ANIMATIONS.ANNA.UP.animationKey, true);
-            } else if(this.me.body.velocity.y > 0){
-                this.me.play(ANIMATIONS.ANNA.DOWN.animationKey, true);
-            } else {
-                this.me.anims.stop();
             }
         }
     }

@@ -31,7 +31,7 @@ export default class PlayerContainer extends Phaser.GameObjects.Container {
         if (this.body.velocity.x > 2) {
             this.player.play(ANIMATIONS.ANNA.RIGHT.animationKey, true);
         } else if (this.body.velocity.x < -2) {
-            this.player.anims.play(ANIMATIONS.ANNA.LEFT.animationKey, true);
+            this.player.anims.playReverse(ANIMATIONS.ANNA.LEFT.animationKey, true);
         } else if (this.body.velocity.y < -2) {
             this.player.play(ANIMATIONS.ANNA.UP.animationKey, true);
         } else if (this.body.velocity.y > 2) {

@@ -28,7 +28,7 @@ export class PlayScene extends Phaser.Scene {
                 this.me = new PlayerContainer(this, me.position.x, me.position.y, SPRITES.ANNA.key, {
                     hp: 10,
                     maxHp: 20,
-                    name: "asdas"
+                    name: me.name,
                 }, 24);
             }
 

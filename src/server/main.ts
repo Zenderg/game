@@ -30,7 +30,7 @@ class Game {
         io.on('connection', (socket: Socket) => {
             this.addPlayer(socket);
 
-            interval(100).subscribe((r: any) => {
+            interval(33).subscribe((r: any) => {
               this.update()
             })
         });

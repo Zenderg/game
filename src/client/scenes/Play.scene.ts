@@ -88,9 +88,10 @@ export class PlayScene extends Phaser.Scene {
 
         const distance = Phaser.Math.Distance.Between(x,y, this.me.x, this.me.y);
         if (player && distance >= 4) {
-            this.physics.moveTo(this.me, x, y, 100, 60)
+            this.physics.moveTo(this.me, x, y, 100, 200)
         } else if (distance < 4) {
-            this.me.body.reset(x, y);
+            this.me.body.setVelocity(0, 0);
+            // this.me.body.reset(x, y);
         }
     }
 

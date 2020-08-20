@@ -24,6 +24,7 @@ export interface Player {
     name: string
     position: Coords
     health: number
+    maxHealth: number
     speed: number
     character: CharacterEnum
 }

@@ -26,8 +26,8 @@ export class PlayScene extends Phaser.Scene {
             const {me, players} = state;
             if (!this.me) {
                 this.me = new PlayerContainer(this, me.position.x, me.position.y, SPRITES.ANNA.key, {
-                    hp: 10,
-                    maxHp: 20,
+                    hp: me.health,
+                    maxHp: me.maxHealth,
                     name: me.name,
                 }, 24);
             }
@@ -63,6 +63,7 @@ export class PlayScene extends Phaser.Scene {
         buildings.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.me, buildings);
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        
         //debug layers
         buildings.renderDebug(this.add.graphics(), {
             tileColor: 0,
@@ -73,9 +74,6 @@ export class PlayScene extends Phaser.Scene {
         // init following camera
         this.cameras.main.startFollow(this.me);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-
-        // this.me.setSize(40, 50).setOffset(10, 10);
-        // this.me.setCollideWorldBounds(true);
 
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D");
 

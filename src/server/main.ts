@@ -61,7 +61,8 @@ class Game {
 
         this.players[id] = {
             character: CharacterEnum.archer,
-            health: 100,
+            health: 75,
+            maxHealth: 100,
             id: id,
             name: 'Anna',
             position: {x: 300, y: 300},

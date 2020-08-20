@@ -1,3 +1,5 @@
+import * as Phaser from "phaser";
+
 const basic = {
     UP: "UP",
     RIGHT: "RIGHT",
@@ -5,7 +7,20 @@ const basic = {
     LEFT: "LEFT",
 }
 
-export const ANIMATIONS = {
+interface IAnimation {
+    spriteKey: string,
+    animationKey: string,
+    frameRate: integer,
+    framesConfig: Phaser.Types.Animations.GenerateFrameNumbers
+}
+
+interface IAnimations {
+    [key: string]: {
+        [key: string]: IAnimation
+    }
+}
+
+export const ANIMATIONS: IAnimations = {
     CAT: {
         UP: {
             spriteKey: "CAT",

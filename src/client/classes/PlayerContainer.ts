@@ -3,6 +3,7 @@ import {createAnimations} from "../tools/createAnimations";
 import {SPRITES} from "../constants/sprites";
 import Player from "./Player";
 import {ANIMATIONS} from "../constants/animations";
+import {HealthBar, IHpConfig} from "./HealthBar";
 
 interface IPlayerContainerConfig {
     name: string,
@@ -12,16 +13,27 @@ interface IPlayerContainerConfig {
 
 export default class PlayerContainer extends Phaser.GameObjects.Container {
     player: Phaser.Physics.Arcade.Sprite;
-
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, config: IPlayerContainerConfig, frames?: string | number) {
+        const spriteWidth = 40;
+        const spriteHeight = 50;
+
         const player = new Player(scene, 0, 0, texture, frames);
         const text = scene.add.text(0, -40, config.name).setOrigin(0.5, 0.5);
 
-        super(scene, x, y, [player, text]);
+        const hpBarWidth = spriteWidth + 10;
+        const hpBarHeight = 8;
+        const hpBar = new HealthBar(scene, {x: -hpBarWidth / 4, y: (-spriteHeight / 2 + hpBarHeight) + 2}, {
+            max: config.maxHp,
+            value: config.hp,
+            height: hpBarHeight,
+            width: hpBarWidth
+        })
+
+        super(scene, x, y, [player, text, hpBar]);
         this.player = player;
 
         scene.add.existing(this);
-        this.setSize(40, 50);
+        this.setSize(spriteWidth, spriteHeight);
         this.setDepth(2);
         scene.physics.world.enable(this);
         this.body.setCollideWorldBounds(true)

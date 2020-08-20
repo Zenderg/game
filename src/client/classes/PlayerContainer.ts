@@ -28,13 +28,13 @@ export default class PlayerContainer extends Phaser.GameObjects.Container {
     }
 
     protected preUpdate(time: number, delta: number) {
-        if (this.body.velocity.x > 1) {
+        if (this.body.velocity.x > 2) {
             this.player.play(ANIMATIONS.ANNA.RIGHT.animationKey, true);
-        } else if (this.body.velocity.x < -1) {
+        } else if (this.body.velocity.x < -2) {
             this.player.anims.play(ANIMATIONS.ANNA.LEFT.animationKey, true);
-        } else if (this.body.velocity.y < -1) {
+        } else if (this.body.velocity.y < -2) {
             this.player.play(ANIMATIONS.ANNA.UP.animationKey, true);
-        } else if (this.body.velocity.y > 1) {
+        } else if (this.body.velocity.y > 2) {
             this.player.play(ANIMATIONS.ANNA.DOWN.animationKey, true);
         } else {
             this.player.anims.stop();

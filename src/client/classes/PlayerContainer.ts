@@ -37,7 +37,10 @@ export default class PlayerContainer extends Phaser.GameObjects.Container {
         } else if (this.body.velocity.y > 2) {
             this.player.play(ANIMATIONS.ANNA.DOWN.animationKey, true);
         } else {
-            this.player.anims.stop();
+            if (this.player.anims.currentAnim) {
+                this.player.anims.stop();
+                this.player.anims.setCurrentFrame(this.player.anims.currentAnim.frames[0]);
+            }
         }
     }
 }

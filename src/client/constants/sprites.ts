@@ -14,5 +14,21 @@ export const SPRITES = {
             frameWidth: 64,
             frameHeight: 64,
         }
+    },
+    RAPIER: {
+        key: "RAPIER",
+        path: "rapier.png",
+        frameConfig: {
+            frameWidth: 192,
+            frameHeight: 192,
+        }
+    },
+    AARON: {
+        key: "AARON",
+        path: "aaron.png",
+        frameConfig: {
+            frameWidth: 64,
+            frameHeight: 64,
+        }
     }
 }

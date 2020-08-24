@@ -1,8 +1,6 @@
 import * as Phaser from "phaser"
-import Creature from "./Creature";
 import {createAnimations} from "../tools/createAnimations";
 import {SPRITES} from "../constants/sprites";
-import {ANIMATIONS} from "../constants/animations";
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frames?: string | number) {
@@ -10,7 +8,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         this.setOrigin(0.5, 0.5)
         scene.physics.world.enableBody(this);
-        createAnimations(SPRITES.ANNA.key, this);
+        createAnimations(SPRITES[texture].key, this);
     }
 
     protected preUpdate(time: number, delta: number) {

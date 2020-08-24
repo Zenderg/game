@@ -13,6 +13,8 @@ interface IPlayerContainerConfig {
 
 export default class PlayerContainer extends Phaser.GameObjects.Container {
     player: Phaser.Physics.Arcade.Sprite;
+    texture: string;
+
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, config: IPlayerContainerConfig, frames?: string | number) {
         const spriteWidth = 40;
         const spriteHeight = 50;
@@ -37,17 +39,19 @@ export default class PlayerContainer extends Phaser.GameObjects.Container {
         this.setDepth(2);
         scene.physics.world.enable(this);
         this.body.setCollideWorldBounds(true)
+
+        this.texture = texture;
     }
 
     protected preUpdate(time: number, delta: number) {
         if (this.body.velocity.x > 2) {
-            this.player.play(ANIMATIONS.ANNA.RIGHT.animationKey, true);
+            this.player.play(ANIMATIONS[this.texture].RIGHT.animationKey, true);
         } else if (this.body.velocity.x < -2) {
-            this.player.anims.playReverse(ANIMATIONS.ANNA.LEFT.animationKey, true);
+            this.player.anims.playReverse(ANIMATIONS[this.texture].LEFT.animationKey, true);
         } else if (this.body.velocity.y < -2) {
-            this.player.play(ANIMATIONS.ANNA.UP.animationKey, true);
+            this.player.play(ANIMATIONS[this.texture].UP.animationKey, true);
         } else if (this.body.velocity.y > 2) {
-            this.player.play(ANIMATIONS.ANNA.DOWN.animationKey, true);
+            this.player.play(ANIMATIONS[this.texture].DOWN.animationKey, true);
         } else {
             if (this.player.anims.currentAnim) {
                 this.player.anims.stop();

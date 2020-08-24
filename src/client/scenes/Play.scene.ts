@@ -25,7 +25,7 @@ export class PlayScene extends Phaser.Scene {
         this.engine.state$.subscribe(state => {
             const {me, players} = state;
             if (!this.me) {
-                this.me = new PlayerContainer(this, me.position.x, me.position.y, SPRITES.ANNA.key, {
+                this.me = new PlayerContainer(this, me.position.x, me.position.y, SPRITES.AARON.key, {
                     hp: me.health,
                     maxHp: me.maxHealth,
                     name: me.name,
@@ -91,7 +91,6 @@ export class PlayScene extends Phaser.Scene {
             this.physics.moveTo(this.me, x, y, 100, 200)
         } else if (distance < 4) {
             this.me.body.setVelocity(0, 0);
-            // this.me.body.reset(x, y);
         }
     }
 

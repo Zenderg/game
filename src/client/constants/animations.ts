@@ -96,5 +96,43 @@ export const ANIMATIONS: IAnimations = {
                 end: 17,
             }
         }
+    },
+    AARON: {
+        UP: {
+            spriteKey: "AARON",
+            animationKey: basic.UP,
+            frameRate: 30,
+            framesConfig: {
+                start: 104,
+                end: 112,
+            }
+        },
+        RIGHT: {
+            spriteKey: "AARON",
+            animationKey: basic.RIGHT,
+            frameRate: 30,
+            framesConfig: {
+                start: 143,
+                end: 151,
+            }
+        },
+        DOWN: {
+            spriteKey: "AARON",
+            animationKey: basic.DOWN,
+            frameRate: 30,
+            framesConfig: {
+                start: 130,
+                end: 138,
+            }
+        },
+        LEFT: {
+            spriteKey: "AARON",
+            animationKey: basic.LEFT,
+            frameRate: 30,
+            framesConfig: {
+                start: 117,
+                end: 125,
+            }
+        }
     }
 }

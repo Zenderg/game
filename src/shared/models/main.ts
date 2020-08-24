@@ -16,8 +16,10 @@ export enum WeaponEnum {
 export enum CharacterEnum {
     archer
 }
-
-export type Degree = number // 0-360
+/**
+ * Integer from 0 to 359
+ */
+export type Degree = number
 
 export interface Player {
     id: string
@@ -29,6 +31,12 @@ export interface Player {
     character: CharacterEnum
 }
 
+export interface Arrow {
+    id: string
+    position: Coords
+    angle: Degree
+}
+
 export interface IPlayer extends Player {
     move(token: string, dir: Vector): void
     attack(token: string, weapon: WeaponEnum, deg: Degree): void
@@ -38,6 +46,7 @@ export interface IPlayer extends Player {
 export interface GameState {
     me: Player
     players: Player[]
+    arrows: Arrow[]
 }
 
 export enum BlockEnum {
@@ -80,4 +89,6 @@ export enum Actions {
     MOVE="MOVE",
     UPDATE="UPDATE",
     NEW_PLAYER="NEW_PLAYER",
+    SWORD_ATTACK="SWORD_ATTACK",
+    BOW_ATTACK="BOW_ATTACK"
 }

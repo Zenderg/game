@@ -1,5 +1,5 @@
 import {BehaviorSubject, Subject} from "rxjs";
-import {Actions, GameState, Player, Vector} from "../../shared/models/main";
+import {Actions, Degree, GameState, Player, Vector} from "../../shared/models/main";
 import io from 'socket.io-client';
 
 export class Engine {
@@ -30,5 +30,13 @@ export class Engine {
 
     move(vector: Vector) {
         this.ws.emit(Actions.MOVE, {data: {vector}, token: this.token});
+    }
+
+    swordAttack(angle: Degree) {
+        this.ws.emit(Actions.SWORD_ATTACK, {data: {angle}, token: this.token});
+    }
+
+    bowAttack(angle: Degree) {
+        this.ws.emit(Actions.BOW_ATTACK, {data: {angle}, token: this.token});
     }
 }

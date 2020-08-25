@@ -101,7 +101,7 @@ export const ANIMATIONS: IAnimations = {
         UP: {
             spriteKey: "AARON",
             animationKey: basic.UP,
-            frameRate: 30,
+            frameRate: 20,
             framesConfig: {
                 start: 104,
                 end: 112,
@@ -110,7 +110,7 @@ export const ANIMATIONS: IAnimations = {
         RIGHT: {
             spriteKey: "AARON",
             animationKey: basic.RIGHT,
-            frameRate: 30,
+            frameRate: 20,
             framesConfig: {
                 start: 143,
                 end: 151,
@@ -119,7 +119,7 @@ export const ANIMATIONS: IAnimations = {
         DOWN: {
             spriteKey: "AARON",
             animationKey: basic.DOWN,
-            frameRate: 30,
+            frameRate: 20,
             framesConfig: {
                 start: 130,
                 end: 138,
@@ -128,7 +128,7 @@ export const ANIMATIONS: IAnimations = {
         LEFT: {
             spriteKey: "AARON",
             animationKey: basic.LEFT,
-            frameRate: 30,
+            frameRate: 20,
             framesConfig: {
                 start: 117,
                 end: 125,

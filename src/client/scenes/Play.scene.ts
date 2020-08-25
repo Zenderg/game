@@ -25,7 +25,7 @@ export class PlayScene extends Phaser.Scene {
         this.engine.state$.subscribe(state => {
             const {me, players} = state;
             if (!this.me) {
-                this.me = new PlayerContainer(this, me.position.x, me.position.y, SPRITES.AARON.key, {
+                this.me = new PlayerContainer(this, me.position.x, me.position.y, SPRITES[me.character].key, {
                     hp: me.health,
                     maxHp: me.maxHealth,
                     name: me.name,
@@ -36,7 +36,11 @@ export class PlayScene extends Phaser.Scene {
                 if (this.players[it.id]) {
                     this.move(this.players[it.id], it);
                 } else {
-                    this.players[it.id] = new Creature(this, me.position.x, me.position.y, SPRITES.CAT.key, 24);
+                    this.players[it.id] = new PlayerContainer(this, it.position.x, it.position.y, SPRITES[it.character].key,{
+                        hp: it.health,
+                        maxHp: it.maxHealth,
+                        name: it.name,
+                    }, 24);
                 }
 
             })
@@ -44,7 +48,7 @@ export class PlayScene extends Phaser.Scene {
             this.move(this.me, me);
 
             players.forEach((it) => {
-                // this.move(this.players[it.id], it);
+                this.move(this.players[it.id], it);
             })
         });
     }
@@ -86,7 +90,7 @@ export class PlayScene extends Phaser.Scene {
     move(player: Phaser.GameObjects.Container, person: Player) {
         const {position: {x, y}} = person;
 
-        const distance = Phaser.Math.Distance.Between(x,y, this.me.x, this.me.y);
+        const distance = Phaser.Math.Distance.Between(x,y, player.x, player.y);
         if (player && distance >= 4) {
             this.physics.moveTo(player, x, y, 100, 200)
         } else if (distance < 4) {

@@ -14,7 +14,8 @@ export enum WeaponEnum {
 }
 
 export enum CharacterEnum {
-    archer
+    ARCHER="ANNA",
+    SWORDMAN="AARON",
 }
 /**
  * Integer from 0 to 359

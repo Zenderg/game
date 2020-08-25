@@ -1,7 +1,7 @@
-import {BehaviorSubject, Subject} from "rxjs";
-import {Actions, CharacterEnum, Degree, GameState, Player, Vector} from "../../shared/models/main";
+import {BehaviorSubject, Subject} from 'rxjs';
+import {Actions, CharacterEnum, Degree, GameState, Player, Vector} from '../../shared/models/main';
 import io from 'socket.io-client';
-import {take} from "rxjs/operators";
+import {take} from 'rxjs/operators';
 
 export class Engine {
     private static instance: Engine;
@@ -60,10 +60,11 @@ export class Engine {
 
     signUp(name: string): Promise<any> {
         return new Promise((resolve => {
+            const character = Math.round(Math.random()) ? CharacterEnum.SWORDMAN : CharacterEnum.ARCHER;
             this.ws = io(`ws://localhost:8000/`);
             this.ws.on('connect', () => {
                 console.log('sadasdasdasd')
-                this.ws.emit(Actions.SIGN_UP, {name})
+                this.ws.emit(Actions.SIGN_UP, {name, character})
             })
             this.ws.on(Actions.TOKEN, (token: string) => {
                 localStorage.setItem('token', token);

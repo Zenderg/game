@@ -49,9 +49,9 @@ class Game {
             socket.on(Actions.SIGN_UP, (message: any) => {
                 console.log('signUp');
                 const newToken = Math.random().toString(36).slice(2);
-                const {name} = message;
+                const {name, character} = message;
                 playersDb.set(newToken, {
-                    character: CharacterEnum.archer,
+                    character: character,
                     health: 75,
                     maxHealth: 100,
                     id: newToken,
@@ -74,7 +74,7 @@ class Game {
         Object.values(this.sockets).forEach((socket: Socket) => {
             const newGameState: GameState = {
                 me: this.players[socket.id],
-                players: playersArray.filter(it => it.id !== socket.id).map(it => ({...it, name: 'Cat'})).slice(0, 2),
+                players: playersArray.filter(it => it.id !== socket.id),
                 arrows: []
             };
 

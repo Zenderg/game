@@ -83,12 +83,16 @@ export interface IServer {
 }
 
 export enum Actions {
-    LOGIN="LOGIN",
+    SIGN_IN="SIGN_IN",
+    SIGN_UP="SIGN_UP",
+    LOGIN_FAIL="LOGIN_FAIL",
+    LOGIN_SUCC="LOGIN_SUCC",
+    TOKEN="TOKEN",
     SPAWN="SPAWN",
     JUMP="JUMP",
     MOVE="MOVE",
     UPDATE="UPDATE",
     NEW_PLAYER="NEW_PLAYER",
     SWORD_ATTACK="SWORD_ATTACK",
-    BOW_ATTACK="BOW_ATTACK"
+    BOW_ATTACK="BOW_ATTACK",
 }

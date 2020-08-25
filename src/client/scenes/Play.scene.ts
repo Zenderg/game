@@ -18,7 +18,7 @@ export class PlayScene extends Phaser.Scene {
         super({
             key: SCENES.PLAY
         })
-        this.engine = new Engine();
+        this.engine = Engine.getInstance();
     }
 
     init() {
@@ -34,7 +34,7 @@ export class PlayScene extends Phaser.Scene {
 
             players.forEach((it: Player) => {
                 if (this.players[it.id]) {
-
+                    this.move(this.players[it.id], it);
                 } else {
                     this.players[it.id] = new Creature(this, me.position.x, me.position.y, SPRITES.CAT.key, 24);
                 }
@@ -88,9 +88,9 @@ export class PlayScene extends Phaser.Scene {
 
         const distance = Phaser.Math.Distance.Between(x,y, this.me.x, this.me.y);
         if (player && distance >= 4) {
-            this.physics.moveTo(this.me, x, y, 100, 200)
+            this.physics.moveTo(player, x, y, 100, 200)
         } else if (distance < 4) {
-            this.me.body.setVelocity(0, 0);
+            player.body.setVelocity(0, 0);
         }
     }
 

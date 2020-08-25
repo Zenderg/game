@@ -1,6 +1,6 @@
 import {Actions, CharacterEnum, GameState, Player} from "../shared/models/main";
-import {interval} from "rxjs";
 import Socket = SocketIOClient.Socket;
+import {interval} from "rxjs";
 
 const express = require('express');
 const app = express()
@@ -16,6 +16,7 @@ app.use('/', express.static(path.resolve(__dirname + '/../../dist')));
 
 const io = require('socket.io')(server);
 
+const playersDb = new Map();
 
 class Game {
     players: {
@@ -27,15 +28,45 @@ class Game {
     } = {}
 
     constructor() {
+        interval(33).subscribe((r: any) => {
+          this.update()
+        })
+
         io.on('connection', (socket: Socket) => {
-            this.addPlayer(socket);
+            socket.on(Actions.SIGN_IN, (message: any) => {
+                const { token } = message;
 
-            interval(33).subscribe((r: any) => {
-              this.update()
+                if(playersDb.has(token)){
+                    this.addPlayer(socket, token);
+                    const player = playersDb.get(token);
+                    console.log(`[${player.name}]: <signed in>`);
+                    socket.emit(Actions.LOGIN_SUCC, player.name);
+                } else {
+                    socket.emit(Actions.LOGIN_FAIL);
+                    console.log('Login failed')
+                }
+            });
+            socket.on(Actions.SIGN_UP, (message: any) => {
+                console.log('signUp');
+                const newToken = Math.random().toString(36).slice(2);
+                const {name} = message;
+                playersDb.set(newToken, {
+                    character: CharacterEnum.archer,
+                    health: 75,
+                    maxHealth: 100,
+                    id: newToken,
+                    name: name,
+                    position: {x: 300, y: 300},
+                    speed: 4,
+                });
+                console.log(`[${name}]: <signed up>`);
+
+                socket.emit(Actions.TOKEN, newToken);
+
+                this.addPlayer(socket, newToken);
+
             })
-        });
-
-
+        })
     }
 
     update() {
@@ -43,7 +74,8 @@ class Game {
         Object.values(this.sockets).forEach((socket: Socket) => {
             const newGameState: GameState = {
                 me: this.players[socket.id],
-                players: playersArray.filter(it => it.id !== socket.id).map(it => ({...it, name: 'Cat'})).slice(0, 2)
+                players: playersArray.filter(it => it.id !== socket.id).map(it => ({...it, name: 'Cat'})).slice(0, 2),
+                arrows: []
             };
 
             socket.emit(Actions.UPDATE, newGameState)
@@ -55,20 +87,11 @@ class Game {
     }
 
 
-    addPlayer(socket: Socket) {
-        const id = socket.id;
+    addPlayer(socket: Socket, id: string) {
+        socket.id = id;
         this.sockets[id] = socket;
 
-        this.players[id] = {
-            character: CharacterEnum.archer,
-            health: 75,
-            maxHealth: 100,
-            id: id,
-            name: 'Anna',
-            position: {x: 300, y: 300},
-            speed: 4,
-        };
-        console.log(id);
+        this.players[id] = playersDb.get(id);
 
         socket.on(Actions.MOVE, (message: any) => {
             const player = this.players[socket.id];
